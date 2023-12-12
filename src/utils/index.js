@@ -239,6 +239,3 @@ export const addNewAddressFormControls = [
     },
 ];
 
-export const styles = {
-    button: "mt-1.5 inline-block bg-black lg:px-6 lg:py-2 p-2 md:font-medium uppercase tracking-wide text-white",
-}
