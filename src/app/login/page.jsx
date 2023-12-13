@@ -10,7 +10,7 @@ const Login = () => {
   const router = useRouter()
 
   return (
-    <div className='bg-white relative max-w-[70%] px-10 m-auto shadow-md '>
+    <div className='bg-white relative max-w-[70%] p-10 m-auto shadow-md '>
       <div className='w-full flex flex-col justify-center items-center gap-5'>
         <p className='text-4xl font-medium text-center font-serif'>
           Login
