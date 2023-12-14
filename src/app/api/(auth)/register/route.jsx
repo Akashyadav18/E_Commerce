@@ -17,18 +17,18 @@ const schema = Joi.object({
 export const dynamic = "force-dynamic";
 
 export async function POST(req) {
-    const {name, email, password, role} = await req.json();
+    const { name, email, password, role } = await req.json();
     // validate the schema
-    const {error} = schema.validate({name, email, password, role});
+    const { error } = schema.validate({ name, email, password, role });
     if (error) {
-        return NextResponse.json({success: false, message: email.details[0]})
+        return NextResponse.json({ success: false, message: error.details[0].message })
     }
 
     try {
         //check if the user exists or not
-        const isUserAlreadyExists = await User.findOne({email});
-        if(isUserAlreadyExists) {
-            return NextResponse.json({success: false, message: "User already exists", status: 400})
+        const isUserAlreadyExists = await User.findOne({ email });
+        if (isUserAlreadyExists) {
+            return NextResponse.json({ success: false, message: "User already exists", status: 400 })
         }
         //hashed password 
         const hashedPassword = await bcrypt.hash(password, 12);
@@ -39,13 +39,13 @@ export async function POST(req) {
             password: hashedPassword,
             role,
         })
-        if(newUser) {
-            const savedUser = await newUser.save();
-            return NextResponse.json(savedUser,{message: "Account created successfully", status: 201, success: true})
-        }
-        
+
+        const savedUser = await newUser.save();
+        return NextResponse.json(savedUser, { message: "Account created successfully", status: 201, success: true })
+
+
     } catch (error) {
         console.log("error while register user", error);
-        return NextResponse.json({message: "Fail to register user", status: 500, success: false});
+        return NextResponse.json({ message: "Fail to register user", status: 500, success: false });
     }
 }

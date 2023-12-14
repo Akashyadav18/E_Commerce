@@ -1,13 +1,57 @@
 "use client"
 
 import InputComponents from '@/components/FormElements/InputComponents'
+import { GlobalContext } from '@/context/Index'
 import { loginFormControls } from '@/utils'
+import axios from 'axios'
+import Cookies from 'js-cookie'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+
+const initialFormData = {
+  email : '',
+  password : '',
+}
 
 const Login = () => {
 
-  const router = useRouter()
+  const [formData, setFormData] = useState(initialFormData);
+  const router = useRouter();
+  const {isAuthUser, setIsAuthUser, user, setUser} = useContext(GlobalContext);
+  
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post('/api/login', formData);
+      console.log("Data :",res.data);
+      if(res.data.success) {
+        setIsAuthUser(true);
+        setUser(res?.data?.finalData?.user);
+        setFormData(initialFormData);
+        Cookies.set('token', res?.data?.finalData?.token);
+        localStorage.setItem('user', JSON.stringify(res?.data?.finalData?.user))
+      } else {
+        setIsAuthUser(false);
+      }
+    } catch (error) {
+      console.log(error);
+    } 
+    // finally {
+    //   setFormData({email: '', password: ''});
+    // }
+  }
+
+  console.log(isAuthUser, user);
+
+  useEffect(() => {
+    if(isAuthUser) router.push('/');
+  }, [isAuthUser])
+
+  function isValidForm() {
+    return formData 
+    && formData.email && formData.email.trim() !== ''
+    && formData.password && formData.password.trim() !== '' ? true : false
+  }
 
   return (
     <div className='bg-white relative max-w-[70%] p-10 m-auto shadow-md '>
@@ -19,11 +63,11 @@ const Login = () => {
           {
             loginFormControls.map((controlItem) => (
               controlItem.componentType === 'input' ? (
-                <InputComponents type={controlItem.type} placeholder={controlItem.placeholder} label={controlItem.label} />
+                <InputComponents key={controlItem.id} value={formData[controlItem.id]} onChange={(e) => {setFormData({ ...formData, [controlItem.id] : e.target.value})}} type={controlItem.type} placeholder={controlItem.placeholder} label={controlItem.label} />
               ) : null
             ))
           }
-          <button className='inline-flex items-center justify-center mt-5  bg-black px-6 py-2 text-lg text-white transition-all duration-200 ease-in-out focus:shadow font-medium tracking-wide'>
+          <button disabled={!isValidForm()} onClick={handleLogin} className='inline-flex disabled:opacity-50 items-center justify-center mt-5  bg-black px-6 py-2 text-lg text-white transition-all duration-200 ease-in-out focus:shadow font-medium tracking-wide'>
             Login
           </button>
           <div className='flex flex-col gap-2'>
