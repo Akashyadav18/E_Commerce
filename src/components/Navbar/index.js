@@ -6,6 +6,7 @@ import React, { Fragment, useContext } from 'react'
 import CommonModal from '../CommonModel';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 const isAdminView = false;
 
@@ -35,6 +36,9 @@ const Navbar = () => {
     console.log(user, isAuthUser, "navbar");
 
     function handleLogout () {
+        toast.success("Logout Successful", {
+            position: "top-center"
+          });
         setIsAuthUser(false);
         setUser(null);
         Cookies.remove('token');
@@ -67,8 +71,8 @@ const Navbar = () => {
                             isAuthUser ? (
                                 <button onClick={handleLogout} className={"mt-1.5 inline-block bg-black lg:px-6 lg:py-2 p-2 md:font-medium uppercase tracking-wide text-white"}>Logout</button>
                                 ) : (
-                                <button onClick={() => router.push('/login')} className={"mt-1.5 inline-block bg-black lg:px-6 lg:py-2 p-2 md:font-medium uppercase tracking-wide text-white"}>Login</button>)
-                        }
+                                <button onClick={() => router.push('/login')} className={"mt-1.5 inline-block bg-black lg:px-6 lg:py-2 p-2 md:font-medium uppercase tracking-wide text-white"}>Login</button>
+                        )}
 
                         <button
                             data-collapse-toggle="navbar-sticky"

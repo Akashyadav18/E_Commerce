@@ -2,7 +2,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import GlobalState from '@/context/Index'
 import Navbar from '@/components/Navbar'
-
+import { Toaster } from 'react-hot-toast';
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -15,8 +15,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <GlobalState>
+        <Toaster />
           <Navbar />
-          <main className='flex min-h-[calc(100vh-4rem)] flex-col mt-[65px]'>
+          <main className='flex min-h-[calc(100vh-5rem)] flex-col mt-[75px]'>
             {children}
           </main>
         </GlobalState>

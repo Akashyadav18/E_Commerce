@@ -6,6 +6,7 @@ import { registrationFormControls } from '@/utils';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
+import toast from 'react-hot-toast';
 
 const isRegistered = false;
 
@@ -31,10 +32,17 @@ const Register = () => {
     e.preventDefault();
     try {
       const res = await axios.post("/api/register", formData);
-      console.log(res.data);
-      router.push('/login');
+      if(res.data.success) {
+        toast.success(res.data.message, {
+          position: "top-center"
+        });
+        router.push('/login');
+      }
     } catch (error) {
       console.log(error);
+      toast.error(res.data.message, {
+        position: "top-center"
+      });
     } finally {
       setFormData({name: "", email: "", password: ""})
     }
