@@ -32,7 +32,7 @@ const Register = () => {
     e.preventDefault();
     try {
       const res = await axios.post("/api/register", formData);
-      if(res.data.success) {
+      if(res.data.status === 201) {
         toast.success(res.data.message, {
           position: "top-center"
         });
