@@ -1,6 +1,7 @@
 "use client"
 
 import InputComponents from '@/components/FormElements/InputComponents'
+import ComponentLevelLoader from '@/components/Loader/componentLevel'
 import { GlobalContext } from '@/context/Index'
 import { loginFormControls } from '@/utils'
 import axios from 'axios'
@@ -78,7 +79,11 @@ const Login = () => {
             ))
           }
           <button disabled={!isValidForm()} onClick={handleLogin} className={`inline-flex disabled:opacity-50 items-center justify-center mt-5  bg-black px-6 py-2 text-lg text-white transition-all duration-200 ease-in-out focus:shadow font-medium tracking-wide`}>
-            Login
+            {componentLevelLoader && componentLevelLoader.loading ? (
+              <ComponentLevelLoader text={"Logging In"} color={"#ffffff"} loading={componentLevelLoader && componentLevelLoader.loading} />
+            ): (
+              "Login"
+            )}
           </button>
           <div className='flex flex-col gap-2'>
             <p>New to website ?</p>
