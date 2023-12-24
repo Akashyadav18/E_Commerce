@@ -36,7 +36,7 @@ export const getAllAdminProducts = async () => {
 export const updateAProduct = async (formData) => {
     try {
         const res = await fetch('/api/admin/update-product', {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 "content-type": "application/json",
                 Authentication: `Bearer ${Cookies.get("token")}`,

@@ -1,35 +1,17 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import ProductTile from './ProductTile'
 import ProductButton from './ProductButtons'
-
-const dummyData = [
-    {
-
-        _id: "6584f9017c9f2f5047fd3d2b",
-        name: "Women cloth",
-        description: "Women's clothes are articles of clothing designed for and worn by wome…",
-        price: 246,
-        category: "women",
-        sizes: [
-            {
-                id: 's',
-                label: 'S',
-                id: 'm',
-                label: 'M',
-                id: 'l',
-                label: 'L',
-            }
-        ],
-        deliveryInfo: "Free",
-        onSale: "yes",
-        priceDrop: 18,
-        imageUrl: "https://firebasestorage.googleapis.com/v0/b/next-js-ecommerce-1b7e4.appspot.com/o/ecommerce%2Fwomen2.jpeg-1703213201737-ttvbvl0tfy?alt=media&token=98be5d9b-4e50-495d-9ffd-6e4344644ef4",
-    }
-]
+import { useRouter } from 'next/navigation'
 
 const CommonListing = ({data}) => {
+
+    const router = useRouter();
+    useEffect(() => {
+        router.refresh();
+    }, [])
+
     return (
         <section className='bg-white py-6'>
             <div className='px-4 sm:px-6 lg:px-10'>

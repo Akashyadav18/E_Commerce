@@ -4,10 +4,10 @@ import InputComponents from '@/components/FormElements/InputComponents'
 import SelectComponents from '@/components/FormElements/SelectComponents'
 import TileComponent from '@/components/FormElements/TileComponents'
 import { AvailableSizes, adminAddProductformControls, firebaseConfig, firebaseStroageURL } from '@/utils'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { initializeApp } from "firebase/app";
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage"
-import { addNewProduct } from '@/services/product'
+import { addNewProduct, updateAProduct } from '@/services/product'
 import { GlobalContext } from '@/context/Index'
 import toast from 'react-hot-toast'
 import ComponentLevelLoader from '@/components/Loader/componentLevel'
@@ -56,7 +56,13 @@ const AdminAddNewProduct = () => {
 
   const [formData, setFormData] = useState(initialFormData);
   const router = useRouter();
-  const { componentLevelLoader, setComponentLevelLoader } = useContext(GlobalContext);
+  const { componentLevelLoader, setComponentLevelLoader, currentUpdatedProduct, setCurrentUpdatedProduct } = useContext(GlobalContext);
+
+  useEffect(() => {
+    if(currentUpdatedProduct !== null) {
+      setFormData(currentUpdatedProduct);
+    }
+  }, [currentUpdatedProduct])
 
   async function handleImage(e) {
     console.log(e.target.files);
@@ -80,12 +86,13 @@ const AdminAddNewProduct = () => {
 
   async function handleAddProduct() {
     setComponentLevelLoader({ loading: true, id: '' });
-    const res = await addNewProduct(formData);
+    const res = currentUpdatedProduct !== null ? await updateAProduct(formData) : await addNewProduct(formData);
     console.log(res);
     if (res.success) {
       setComponentLevelLoader({ loading: false, id: '' });
       toast.success(res.message, { position: "top-center" });
       setFormData(initialFormData);
+      setCurrentUpdatedProduct(null);
       setTimeout(() => {
         router.push("/admin-view/all-products")
       }, 1000)
@@ -119,9 +126,9 @@ const AdminAddNewProduct = () => {
           }
           <button onClick={handleAddProduct} className='py-2 border border-black text-center hover:bg-black hover:text-white'>
           {componentLevelLoader && componentLevelLoader.loading ? (
-              <ComponentLevelLoader text={"Adding Product"} color={"#ffffff"} loading={componentLevelLoader && componentLevelLoader.loading} />
+              <ComponentLevelLoader text={currentUpdatedProduct !== null ? "Update Product" : "Adding Product"} color={"#ffffff"} loading={componentLevelLoader && componentLevelLoader.loading} />
             ): (
-              "Add Product"
+              currentUpdatedProduct !== null ? "Update Product" : "Add Product"
             )}
           </button>
         </div>
