@@ -29,13 +29,13 @@ const dummyData = [
     }
 ]
 
-const CommonListing = () => {
+const CommonListing = ({data}) => {
     return (
         <section className='bg-white py-6'>
             <div className='px-4 sm:px-6 lg:px-10'>
-                <div className='mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4'>
-                    { dummyData && dummyData.length ?
-                        dummyData.map((item) => (
+                <div className='mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4'>
+                    { data && data.length ?
+                        data.map((item) => (
                             <article key={item._id} className='relative flex flex-col overflow-hidden border shadow cursor-pointer p-2'>
                                 <ProductTile item={item}/>
                                 <div className='flex gap-3 mt-2'>
