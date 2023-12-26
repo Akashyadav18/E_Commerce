@@ -16,7 +16,7 @@ const ProductTile = ({ item }) => {
                 <h4 className='text-lg font-medium'>Price: ${item.price}</h4>
                 <p className='text-lg font-medium'>Category: {item.category}</p>
                 <div className='flex gap-5'>
-                    <p className={`${item.deliveryInfo === "Free" ? "bg-lime-500 text-white" : "bg-red-400 text-white"} px-3 py-1 rounded `}>{item.deliveryInfo}</p>
+                    <p className={`${item.deliveryInfo == "paid" ? "bg-red-400" : "bg-lime-500"} text-white px-3 py-1 rounded `}>{item.deliveryInfo}</p>
                     <p className="px-2 py-1 bg-neutral-400 text-white rounded">{item.priceDrop}% off</p>
                 </div>
             </div>

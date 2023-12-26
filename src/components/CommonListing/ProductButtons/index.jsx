@@ -47,7 +47,7 @@ const ProductButton = ({ item }) => {
     </>
   ) : (
     <>
-      <button>Add to Cart</button>
+      <button className='mt-1.5 flex w-full justify-center items-center bg-black px-5 py-3 font-medium uppercase tracking-wide text-white'>Add to Cart</button>
     </>
   )
 
