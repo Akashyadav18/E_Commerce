@@ -1,3 +1,4 @@
+import CommonDetails from '@/components/CommonDetails';
 import { productById } from '@/services/product'
 import React from 'react'
 
@@ -8,7 +9,7 @@ const ProductDetails = async ({params}) => {
 
   return (
     <div>
-      Details
+      <CommonDetails item={productDetailsData && productDetailsData.data}/>
     </div>
   )
 }

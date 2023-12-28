@@ -12,9 +12,9 @@ export async function GET(req) {
         if(!productId) {
             return NextResponse.json({message: "Product Id is required", status: 400, success: false});
         }
-        const getData = await product.find({id: productId});
+        const getData = await product.find({_id: productId});
         if(getData && getData.length) {
-            return NextResponse.json({data: getData, status: 200, success: true});
+            return NextResponse.json({data: getData[0], status: 200, success: true});
         } else {
             return NextResponse.json({message: "Product Not Found!", status: 400, success: false});
         }
