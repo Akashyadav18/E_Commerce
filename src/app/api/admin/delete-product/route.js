@@ -2,11 +2,13 @@ import { ConnectDB } from "@/database/Connection";
 import product from "@/model/Product";
 import { NextResponse } from "next/server";
 
-ConnectDB();
 export const dynamic = "force-dynamic";
 
 export async function DELETE (req) {
     try {
+
+        await ConnectDB();
+
         const {searchParams} = new URL(req.url);
         const id = searchParams.get('id');
         if(!id) {

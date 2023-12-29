@@ -2,12 +2,13 @@ import { ConnectDB } from "@/database/Connection";
 import product from "@/model/Product";
 import { NextResponse } from "next/server";
 
-
-ConnectDB();
 export const dynamic = "force-dynamic";
 
 export  async function PUT (req) {
     try {
+
+        await ConnectDB();
+
         const extractData = await req.json();
         const {_id, name, description, price, category, sizes, deliveryInfo, onSale, priceDrop, imageUrl} = extractData;
 

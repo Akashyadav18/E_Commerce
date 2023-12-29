@@ -5,8 +5,6 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs"
 import { NextResponse } from "next/server";
 
-ConnectDB();
-
 const schema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().required(),
@@ -15,6 +13,9 @@ const schema = Joi.object({
 export const dynamic = "force-dynamic"
 
 export async function POST(req) {
+
+    await ConnectDB();
+
     const { email, password } = await req.json();
 
     const { error } = schema.validate({ email, password });

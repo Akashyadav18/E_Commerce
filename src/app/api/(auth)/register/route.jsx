@@ -5,7 +5,6 @@ import { NextResponse } from "next/server";
 
 const { ConnectDB } = require("@/database/Connection");
 
-ConnectDB();
 
 const schema = Joi.object({
     name: Joi.string().required(),
@@ -17,6 +16,9 @@ const schema = Joi.object({
 export const dynamic = "force-dynamic";
 
 export async function POST(req) {
+
+    await ConnectDB();
+
     const { name, email, password, role } = await req.json();
     // validate the schema
     const { error } = schema.validate({ name, email, password, role });

@@ -2,11 +2,13 @@ import { ConnectDB } from "@/database/Connection";
 import product from "@/model/Product";
 import { NextResponse } from "next/server";
 
-ConnectDB();
 export const dynamic = "force-dynamic";
 
 export async function GET(req) {
     try {
+
+        await ConnectDB();
+
         const {searchParams} = new URL(req.url);
         const productId = searchParams.get('id');
         if(!productId) {

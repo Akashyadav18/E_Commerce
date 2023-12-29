@@ -3,8 +3,6 @@ import product from "@/model/Product";
 import Joi from "joi";
 import { NextResponse } from "next/server";
 
-ConnectDB();
-
 const AddNewProductSchema = Joi.object({
     name: Joi.string().required(),
     description: Joi.string().required(),
@@ -21,6 +19,9 @@ export const dynamic = "force-dynamic";
 
 export async function POST (req) {
     try {
+
+        await ConnectDB();
+
         const user = 'admin';
         if(user === 'admin') {
             const extractData = await req.json();

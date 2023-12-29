@@ -3,12 +3,13 @@ import { NextResponse } from "next/server";
 
 const { ConnectDB } = require("@/database/Connection");
 
-ConnectDB();
-
 export const dynamic = "force-dynamic";
 
 export async function GET() {
     try {
+
+        await ConnectDB();
+
         const user = "admin";
         if(user === "admin") {
             const extractAllProducts = await product.find({});
