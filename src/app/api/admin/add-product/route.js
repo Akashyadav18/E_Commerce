@@ -28,7 +28,7 @@ export async function POST (req) {
         const isAuthUser = await AuthUser(req);
         console.log(isAuthUser);
 
-        if(user === 'admin') {
+        if(user === 'admin5') {
             const extractData = await req.json();
             const {name, description, price, imageUrl, category, sizes, deliveryInfo, onSale, priceDrop} = extractData;
             const {error} = AddNewProductSchema.validate({name, description, price, imageUrl, category, sizes, deliveryInfo, onSale, priceDrop});
