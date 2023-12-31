@@ -1,4 +1,5 @@
 import { ConnectDB } from "@/database/Connection";
+import AuthUser from "@/middleware/AuthUser";
 import product from "@/model/Product";
 import Joi from "joi";
 import { NextResponse } from "next/server";
@@ -23,6 +24,10 @@ export async function POST (req) {
         await ConnectDB();
 
         const user = 'admin';
+
+        const isAuthUser = await AuthUser(req);
+        console.log(isAuthUser);
+
         if(user === 'admin') {
             const extractData = await req.json();
             const {name, description, price, imageUrl, category, sizes, deliveryInfo, onSale, priceDrop} = extractData;
