@@ -39,11 +39,11 @@ export async function POST(req) {
         //token
         const tokenData = {
             id: checkUser._id,
-            email: checkUser?._email,
-            role: checkUser?._role
+            email: checkUser?.email,
+            role: checkUser?.role
         }
-        const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET_KEY, { expiresIn: "1d" });
-
+        const token = jwt.sign(tokenData, process.env.TOKEN_SECRET_KEY, { expiresIn: "1d" });
+        
         const finalData = {
             token,
             user: {

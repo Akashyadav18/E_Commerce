@@ -9,7 +9,7 @@ const AuthUser = async (req) => {
 
     try {
         const extractAuthUserInfo = jwt.verify(token, process.env.TOKEN_SECRET_KEY);
-        console.log("extact :",extractAuthUserInfo);
+        console.log("extract :",extractAuthUserInfo); 
     } catch (error) {
         console.log(error);
         return false;
