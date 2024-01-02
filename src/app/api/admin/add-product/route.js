@@ -22,13 +22,11 @@ export async function POST (req) {
     try {
 
         await ConnectDB();
-
-        const user = 'admin';
-
+        
         const isAuthUser = await AuthUser(req);
         console.log("isAuthUser :", isAuthUser);
 
-        if(user === 'admin5') {
+        if(isAuthUser?.role === 'admin') {
             const extractData = await req.json();
             const {name, description, price, imageUrl, category, sizes, deliveryInfo, onSale, priceDrop} = extractData;
             const {error} = AddNewProductSchema.validate({name, description, price, imageUrl, category, sizes, deliveryInfo, onSale, priceDrop});
