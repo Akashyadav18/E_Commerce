@@ -1,8 +1,10 @@
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 const ProductTile = ({ item }) => {
+    const router = useRouter();
     return (
-        <div className=''>
+        <div onClick={() => router.push(`/product/${item._id}`)} className=''>
             <div className='overflow-hidden aspect-w-1 aspect-h-1 h-52'>
                 <img src={item.imageUrl} alt='productImg' className='w-full h-full object-cover transition-all duration-300 group-hover:scale-125' />
             </div>

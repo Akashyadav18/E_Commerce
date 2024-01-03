@@ -18,7 +18,7 @@ const CommonListing = ({data}) => {
                 <div className='mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4'>
                     { data && data.length ?
                         data.map((item) => (
-                            <article key={item._id} onClick={() => router.push(`/product/${item._id}`)} className='relative flex flex-col overflow-hidden border shadow cursor-pointer p-2'>
+                            <article key={item._id} className='relative flex flex-col overflow-hidden border shadow cursor-pointer p-2'>
                                 <ProductTile item={item}/>
                                 <div className='flex gap-3 mt-2'>
                                 <ProductButton item={item} />
