@@ -16,6 +16,7 @@ export async function POST(req) {
         await ConnectDB();
 
         const isAuthUser = await AuthUser(req);
+        console.log("Auth: " + isAuthUser);
         if (isAuthUser) {
             const data = await req.json();
             const { userID, productID } = data;
