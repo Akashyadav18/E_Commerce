@@ -16,9 +16,8 @@ export async function POST(req) {
         await ConnectDB();
 
         const isAuthUser = await AuthUser(req);
-        console.log("isAuthUser: ", isAuthUser);
         
-        if (isAuthUser) {
+        if(isAuthUser) {
             const data = await req.json();
             const { userID, productID } = data;
             const { error } = addToCart.validate({ userID, productID });
@@ -30,6 +29,7 @@ export async function POST(req) {
                 productID: productID,
                 userID: userID,
             })
+            console.log(isCurrentCartItemAlreadyExists);
             if (isCurrentCartItemAlreadyExists) {
                 return NextResponse.json({ message: "Product already added in cart", status: 500, success: false })
             }
@@ -44,7 +44,7 @@ export async function POST(req) {
             return NextResponse.json({ message: "You are not authenticated", status: 500, success: false })
         }
 
-    } catch (error) {
+    } catch(error) {
         console.log(error);
         return NextResponse.json({ message: "Something went Wrong while adding product to cart", status: 500, success: false })
     }
