@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const CartSchema = new mongoose.Schema({
     userID: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+        ref: 'User'
 
         // Type: mongoose.Schema.Types.ObjectId
         // Stores a unique identifier for a user in the "User" collection.
@@ -14,7 +14,7 @@ const CartSchema = new mongoose.Schema({
     },
     productID: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Products"
+        ref: 'Products'
     },
     quantity: {
         type: Number,

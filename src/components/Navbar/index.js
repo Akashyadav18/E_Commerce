@@ -7,8 +7,9 @@ import CommonModal from '../CommonModel';
 import Cookies from 'js-cookie';
 import { usePathname, useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
+import CartModel from '../CartModel';
 
-function NavItems({isModelView= false, isAdminView, router}) {
+function NavItems({ isModelView = false, isAdminView, router }) {
     return (
         <div className={`item-center justify-between w-full md:flex md:w-auto ${isModelView ? "" : "hidden"}`} id="nav-items">
             <ul className={`flex flex-col p-4 md:p-0 mt-4 font-medium rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-white ${isModelView ? "border-none" : "border border-gray-100"}`}>
@@ -27,23 +28,23 @@ function NavItems({isModelView= false, isAdminView, router}) {
 
 const Navbar = () => {
 
-    const {showNavModel, setShowNavModel} = useContext(GlobalContext);
-    const {user, isAuthUser, setIsAuthUser, setUser, currentUpdatedProduct, setCurrentUpdatedProduct} = useContext(GlobalContext);
+    const { showNavModel, setShowNavModel } = useContext(GlobalContext);
+    const { user, isAuthUser, setIsAuthUser, setUser, currentUpdatedProduct, setCurrentUpdatedProduct, showCartModal } = useContext(GlobalContext);
     const router = useRouter();
     const pathName = usePathname();
 
-    console.log("Path Name :",pathName);
+    console.log("Path Name :", pathName);
 
     useEffect(() => {
-        if(pathName !== '/admin-view/add-product' && currentUpdatedProduct !== null) {
+        if (pathName !== '/admin-view/add-product' && currentUpdatedProduct !== null) {
             setCurrentUpdatedProduct(null);
         }
     }, [pathName])
 
-    function handleLogout () {
+    function handleLogout() {
         toast.success("Logout Successful", {
             position: "top-center"
-          });
+        });
         setIsAuthUser(false);
         setUser(null);
         Cookies.remove('token');
@@ -71,17 +72,17 @@ const Navbar = () => {
                         }
                         {
                             user?.role === 'admin' ?
-                                isAdminView ? 
-                                <button onClick={() => router.push('/')} className={"mt-1.5 inline-block bg-black lg:px-6 lg:py-2 p-2 md:font-medium uppercase tracking-wide text-white"}>Client View</button> 
-                                : <button onClick={() => router.push('/admin-view')} className={"mt-1.5 inline-block bg-black lg:px-6 lg:py-2 p-2 md:font-medium uppercase tracking-wide text-white"}>Admin View</button>
+                                isAdminView ?
+                                    <button onClick={() => router.push('/')} className={"mt-1.5 inline-block bg-black lg:px-6 lg:py-2 p-2 md:font-medium uppercase tracking-wide text-white"}>Client View</button>
+                                    : <button onClick={() => router.push('/admin-view')} className={"mt-1.5 inline-block bg-black lg:px-6 lg:py-2 p-2 md:font-medium uppercase tracking-wide text-white"}>Admin View</button>
                                 : null
                         }
                         {
                             isAuthUser ? (
                                 <button onClick={handleLogout} className={"mt-1.5 inline-block bg-black lg:px-6 lg:py-2 p-2 md:font-medium uppercase tracking-wide text-white"}>Logout</button>
-                                ) : (
+                            ) : (
                                 <button onClick={() => router.push('/login')} className={"mt-1.5 inline-block bg-black lg:px-6 lg:py-2 p-2 md:font-medium uppercase tracking-wide text-white"}>Login</button>
-                        )}
+                            )}
 
                         <button
                             data-collapse-toggle="navbar-sticky"
@@ -111,9 +112,12 @@ const Navbar = () => {
                 </div>
             </nav>
             <CommonModal
-            showModalTitle={false}
-            mainContent={<NavItems router={router} isModelView={true} isAdminView={isAdminView}/>}
-            show={showNavModel} setShow={setShowNavModel}/>
+                showModalTitle={false}
+                mainContent={<NavItems router={router} isModelView={true} isAdminView={isAdminView} />}
+                show={showNavModel} setShow={setShowNavModel} />
+            {
+                showCartModal && <CartModel />
+            }
         </>
     )
 }

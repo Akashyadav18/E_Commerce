@@ -29,11 +29,12 @@ export async function POST(req) {
                 productID: productID,
                 userID: userID,
             })
-            console.log(isCurrentCartItemAlreadyExists);
-            if (isCurrentCartItemAlreadyExists) {
+
+            if (isCurrentCartItemAlreadyExists?.length > 0) {
                 return NextResponse.json({ message: "Product already added in cart", status: 500, success: false })
             }
             const saveProductToCart = await Cart.create(data);
+            console.log("saveCart :",saveProductToCart);
             if (saveProductToCart) {
                 return NextResponse.json({ message: "Product added successfully", status: 200, success: true });
             } else {

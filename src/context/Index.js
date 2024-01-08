@@ -9,14 +9,15 @@ export default function GlobalState({ children }) {
 
     const [showNavModel, setShowNavModel] = useState(false);
     const [pageLevelLoader, setPageLevelLoader] = useState(false);
-    const [componentLevelLoader, setComponentLevelLoader] = useState({loading: false, id: ''});
+    const [componentLevelLoader, setComponentLevelLoader] = useState({ loading: false, id: '' });
     const [isAuthUser, setIsAuthUser] = useState(null);
     const [user, setUser] = useState(null);
     const [currentUpdatedProduct, setCurrentUpdatedProduct] = useState(null);
+    const [showCartModal, setShowCartModal] = useState(false);
 
     useEffect(() => {
         console.log(Cookies.get('token'));
-        if(Cookies.get('token') !== undefined) {
+        if (Cookies.get('token') !== undefined) {
             setIsAuthUser(true);
             const userData = JSON.parse(localStorage.getItem('user')) || {};
             setUser(userData);
@@ -28,9 +29,12 @@ export default function GlobalState({ children }) {
 
     return (
         <GlobalContext.Provider
-            value={{ showNavModel, setShowNavModel,isAuthUser, setIsAuthUser, 
-                        user, setUser, pageLevelLoader, setPageLevelLoader,
-                     componentLevelLoader, setComponentLevelLoader, currentUpdatedProduct, setCurrentUpdatedProduct}}
+            value={{
+                showNavModel, setShowNavModel, isAuthUser, setIsAuthUser,
+                user, setUser, pageLevelLoader, setPageLevelLoader,
+                componentLevelLoader, setComponentLevelLoader, currentUpdatedProduct,
+                setCurrentUpdatedProduct, showCartModal, setShowCartModal
+            }}
         >{children}</GlobalContext.Provider>
     )
 }

@@ -3,6 +3,7 @@ import React from 'react'
 
 const ProductTile = ({ item }) => {
     const router = useRouter();
+    
     return (
         <div onClick={() => router.push(`/product/${item._id}`)} className=''>
             <div className='overflow-hidden aspect-w-1 aspect-h-1 h-52'>
