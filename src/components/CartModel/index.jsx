@@ -3,11 +3,13 @@
 import React, { Fragment, useContext, useEffect } from 'react'
 import CommonModal from '../CommonModel'
 import { GlobalContext } from '@/context/Index'
-import { getAllCartItems } from '@/services/cart'
+import { deleteFromCart, getAllCartItems } from '@/services/cart'
+import toast from 'react-hot-toast'
+import ComponentLevelLoader from '../Loader/componentLevel'
 
 const CartModel = () => {
 
-  const { showCartModal, setShowCartModal, user, cartItems, setCartItems } = useContext(GlobalContext);
+  const { showCartModal, setShowCartModal, user, cartItems, setCartItems, componentLevelLoader, setComponentLevelLoader } = useContext(GlobalContext);
 
   async function extractAllCartItems() {
     const res = await getAllCartItems(user?._id);
@@ -21,13 +23,26 @@ const CartModel = () => {
     if (user !== null) extractAllCartItems();
   }, [user]);
 
+  const handleDeleteCartItem = async (getCartItemID) => {
+    setComponentLevelLoader({ loading: true, id: getCartItemID });
+    const res = await deleteFromCart(getCartItemID);
+    if (res.success) {
+      setComponentLevelLoader({ loading: false, id: "" });
+      toast.success(res.message, { position: "top-right" });
+      extractAllCartItems();
+    } else {
+      setComponentLevelLoader({ loading: false, id: "" });
+      toast.error(res.message, { position: "top-right" });
+    }
+  }
+
   return (
     <div>
       <CommonModal showButtons={true}
         show={showCartModal} setShow={setShowCartModal}
         mainContent={
           cartItems && cartItems.length ?
-            <ul role='list' className='my-6 divide-y divide-gray-300'>
+            <ul role='list' className='my-3 divide-y divide-gray-300'>
               {
                 cartItems.map((cartItem) => (
                   <li key={cartItem.id} className='flex py-6'>
@@ -44,7 +59,13 @@ const CartModel = () => {
                         <p className='mt-1 text-sm text-gray-600'>${cartItem && cartItem.productID && cartItem.productID.price}</p>
                       </div>
                       <div className='flex flex-1 items-end justify-between text-sm'>
-                        <button type='button' className='font-medium text-red-600 sm:order-2'>Remove</button>
+                        <button onClick={() => handleDeleteCartItem(cartItem._id)} type='button' className='font-medium text-red-600 sm:order-2'>
+                          {
+                            componentLevelLoader && componentLevelLoader.loading && componentLevelLoader.loading.id === cartItem._id ?
+                              <ComponentLevelLoader text={"Removing"} color={"#000000"} loading={componentLevelLoader && componentLevelLoader.loading}
+                              /> : "Remove"
+                          }
+                        </button>
                       </div>
                     </div>
                   </li>
