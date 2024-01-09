@@ -23,7 +23,7 @@ export const getAllCartItems = async (id) => {
         const res = await fetch(`/api/cart/all-cart-items?id=${id}`, {
             method: "GET",
             headers: {
-                Authorization: `Bearer ${Cookies.get("token")}`
+                Authentication: `Bearer ${Cookies.get("token")}`
             }
         });
         const data = await res.json();
@@ -39,7 +39,7 @@ export const deleteFromCart = async (id) => {
         const res = await fetch(`/api/cart/delete-from-cart?id=${id}`, {
             method: 'DELETE',
             headers: { 
-                Authorization: `Bearer ${Cookies.get('token')}`
+                Authentication: `Bearer ${Cookies.get('token')}`
             }
         })
         const data = await res.json();
