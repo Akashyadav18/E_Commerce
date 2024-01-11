@@ -1,7 +1,30 @@
 'use client'
-import React from 'react'
+import { GlobalContext } from '@/context/Index';
+import { addToCart } from '@/services/cart';
+import React, { useContext } from 'react'
+import toast from 'react-hot-toast';
+import ComponentLevelLoader from '../Loader/componentLevel';
 
 const CommonDetails = ({ item }) => {
+
+  const {setComponentLevelLoader, componentLevelLoader, user, setShowCartModal} = useContext(GlobalContext);
+
+  const handleAddToCart = async (getItem) => {
+    setComponentLevelLoader({ loading: true, id: "" });
+
+    const res = await addToCart({ productID: getItem._id, userID: user._id });
+    console.log("Add to cart :", res);
+    if (res.success) {
+      toast.success(res.message, { position: "top-center" });
+      setComponentLevelLoader({ loading: false, id: "" });
+      setShowCartModal(true);
+    } else {
+      toast.error(res.message, { position: "top-center" });
+      setComponentLevelLoader({ loading: false, id: "" });
+      setShowCartModal(true);
+    }
+  }
+
   return (
     <section className='mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8'>
       <div className='container mx-auto px-4'>
@@ -42,7 +65,13 @@ const CommonDetails = ({ item }) => {
                             : null
                     }
               </div>
-              <button type='button' className='mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium tracking-wide uppercase text-white'>Add to Cart</button>
+              <button type='button' onClick={() => handleAddToCart(item)} className='mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium tracking-wide uppercase text-white'>
+              {
+                componentLevelLoader && componentLevelLoader.loading ?
+                <ComponentLevelLoader text={"Adding To Cart"} color={"#ffffff"} loading={componentLevelLoader && componentLevelLoader.loading}/>
+                 : "Add To Cart"
+              }
+              </button>
             </div>
             <ul className="mt-8 space-y-2">
               <li className='flex items-center text-left text-sm font-medium text-gray-600'>{item && item.deliveryInfo}</li>

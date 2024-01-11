@@ -25,7 +25,7 @@ const CommonCart = ({ cartItems = [], handleDeleteCartItem, componentLevelLoader
                                 <p className='text-base font-semibold text-gray-900'>{cartItem && cartItem.productID && cartItem.productID.name}</p>
                               </div>
                               <div className='mt-4 flex gap-3 items-end justify-between sm:mt-0 sm:items-start sm:justify-end'>
-                                <p className='shrink-0 w-20 text-base font-semibold text-gray-900 sm:order-1 sm:ml-8 sm:text-right'>{cartItem && cartItem.productID && cartItem.productID.price}</p>
+                                <p className='shrink-0 w-20 text-base font-semibold text-gray-900 sm:order-1 sm:ml-8 sm:text-right'>${cartItem && cartItem.productID && cartItem.productID.price}</p>
                                 <button onClick={() => handleDeleteCartItem(cartItem._id)} type='button' className='font-medium text-red-700 sm:order-2'>
                                   {
                                     componentLevelLoader && componentLevelLoader.loading && componentLevelLoader.id === cartItem._id ?

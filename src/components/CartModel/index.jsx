@@ -78,7 +78,7 @@ const CartModel = () => {
         buttonComponent={
           <Fragment>
             <div className='flex justify-evenly items-center gap-5'>
-              <button type='button' onClick={() => router.push("/cart")} className='w-full inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide'>Go To Cart</button>
+              <button type='button' onClick={() => {router.push("/cart"), setShowCartModal(false)}} className='w-full inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide'>Go To Cart</button>
               <button disabled={cartItems && cartItems.length === 0} type='button' className='w-full inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide disabled:opacity-50'>Check Out</button>
             </div>
             <div className='mt-6 flex justify-center text-center text-sm text-gray-600'>
