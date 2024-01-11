@@ -6,11 +6,12 @@ import { GlobalContext } from '@/context/Index'
 import { deleteFromCart, getAllCartItems } from '@/services/cart'
 import toast from 'react-hot-toast'
 import ComponentLevelLoader from '../Loader/componentLevel'
+import { useRouter } from 'next/navigation'
 
 const CartModel = () => {
 
   const { showCartModal, setShowCartModal, user, cartItems, setCartItems, componentLevelLoader, setComponentLevelLoader } = useContext(GlobalContext);
-
+  const router = useRouter();
   async function extractAllCartItems() {
     const res = await getAllCartItems(user?._id);
     console.log(res);
@@ -77,7 +78,7 @@ const CartModel = () => {
         buttonComponent={
           <Fragment>
             <div className='flex justify-evenly items-center gap-5'>
-              <button type='button' className='w-full inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide'>Go To Cart</button>
+              <button type='button' onClick={() => router.push("/cart")} className='w-full inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide'>Go To Cart</button>
               <button disabled={cartItems && cartItems.length === 0} type='button' className='w-full inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide disabled:opacity-50'>Check Out</button>
             </div>
             <div className='mt-6 flex justify-center text-center text-sm text-gray-600'>

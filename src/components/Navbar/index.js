@@ -29,7 +29,7 @@ function NavItems({ isModelView = false, isAdminView, router }) {
 const Navbar = () => {
 
     const { showNavModel, setShowNavModel } = useContext(GlobalContext);
-    const { user, isAuthUser, setIsAuthUser, setUser, currentUpdatedProduct, setCurrentUpdatedProduct, showCartModal } = useContext(GlobalContext);
+    const { user, isAuthUser, setIsAuthUser, setUser, currentUpdatedProduct, setCurrentUpdatedProduct, showCartModal, setShowCartModal } = useContext(GlobalContext);
     const router = useRouter();
     const pathName = usePathname();
 
@@ -66,7 +66,7 @@ const Navbar = () => {
                             !isAdminView && isAuthUser ? (
                                 <Fragment>
                                     <button className={"mt-1.5 inline-block bg-black lg:px-6 lg:py-2 p-2 md:font-medium uppercase tracking-wide text-white"}>Account</button>
-                                    <button className={"mt-1.5 inline-block bg-black lg:px-6 lg:py-2 p-2 md:font-medium uppercase tracking-wide text-white"}>Cart</button>
+                                    <button onClick={() => setShowCartModal(true)} className={"mt-1.5 inline-block bg-black lg:px-6 lg:py-2 p-2 md:font-medium uppercase tracking-wide text-white"}>Cart</button>
                                 </Fragment>
                             ) : null
                         }
