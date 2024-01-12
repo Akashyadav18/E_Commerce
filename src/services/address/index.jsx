@@ -56,7 +56,7 @@ export const updateAddress = async (formData) => {
 
 export const deleteAddress = async(id) => {
     try {
-        const res = await fetch("/api/address/delete-address", {
+        const res = await fetch(`/api/address/delete-address?id=${id}`, {
             method: "DELETE",
             headers: {
                 Authorization: `Bearer ${Cookies.get("token")}`,
