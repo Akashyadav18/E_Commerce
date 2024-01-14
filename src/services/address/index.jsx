@@ -6,7 +6,7 @@ export const addNewAddress = async (formData) => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${Cookies.get("token")}`,
+                Authentication: `Bearer ${Cookies.get("token")}`,
             },
             body: JSON.stringify(formData),    
         });
@@ -23,7 +23,7 @@ export const fetchAllAddresses = async (id) => {
         const res = await fetch(`/api/address/get-all-address?id=${id}`, {
             method: 'GET',
             headers: {
-                Authorization: `Bearer ${Cookies.get("token")}`
+                Authentication: `Bearer ${Cookies.get("token")}`
             },
         });
 
@@ -41,7 +41,7 @@ export const updateAddress = async (formData) => {
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${Cookies.get('token')}`,
+                Authentication: `Bearer ${Cookies.get('token')}`,
             },
             body: JSON.stringify(formData),
         });
@@ -59,7 +59,7 @@ export const deleteAddress = async(id) => {
         const res = await fetch(`/api/address/delete-address?id=${id}`, {
             method: "DELETE",
             headers: {
-                Authorization: `Bearer ${Cookies.get("token")}`,
+                Authentication: `Bearer ${Cookies.get("token")}`,
             },
         });
 

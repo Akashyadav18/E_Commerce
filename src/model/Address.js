@@ -5,11 +5,11 @@ const NewAddressSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
     },
-    fullName: string,
-    address: string,
-    city: string,
-    country: string,
-    postalCode: string,
+    fullName: String,
+    address: String,
+    city: String,
+    country: String,
+    postalCode: String,
 }, {
     timestamps: true
 })

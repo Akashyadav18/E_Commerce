@@ -1,14 +1,55 @@
 "use client"
 
 import InputComponents from '@/components/FormElements/InputComponents';
+import ComponentLevelLoader from '@/components/Loader/componentLevel';
 import { GlobalContext } from '@/context/Index'
+import { addNewAddress, fetchAllAddresses } from '@/services/address';
 import { addNewAddressFormControls } from '@/utils';
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import toast from 'react-hot-toast';
 
 const Account = () => {
 
-    const { user, addressFormData, setAddressFormData, addresses, setAddresses } = useContext(GlobalContext);
+    const { user, addressFormData, setAddressFormData, addresses, setAddresses, componentLevelLoader, setComponentLevelLoader } = useContext(GlobalContext);
     const [showAddressForm, setShowAddressForm] = useState(false);
+
+    const extractAllAddresses = async () => {
+        const res = await fetchAllAddresses(user?._id);
+        if(res.success) {
+            setAddresses(res.data);
+        }
+    }
+
+    useEffect(() => {
+        if(user !== null) extractAllAddresses();
+    }, [user]);
+
+    const handleAddOrUpdateAddress = async () => {
+        setComponentLevelLoader({loading: true, id: ""})
+        const res = await addNewAddress({ ...addressFormData, userID: user?._id });
+        console.log(res);
+        if (res.success) {
+            setComponentLevelLoader({loading: false, id: ""})
+            toast.success(res.message, { position: "top-center" });
+            setAddressFormData({
+                fullName: "",
+                address: "",
+                city: "",
+                country: "",
+                postalCode: "",
+            })
+        } else {
+            setComponentLevelLoader({loading: false, id: ""});
+            toast.error(res.message, { position: "top-center" });
+            setAddressFormData({
+                fullName: "",
+                address: "",
+                city: "",
+                country: "",
+                postalCode: "",
+            })
+        }
+    }
 
     return (
         <section>
@@ -26,7 +67,7 @@ const Account = () => {
                         <button className='mt-4 group inline-flex items-center justify-between bg-black px-4 py-2 text-lg text-white font-medium uppercase tracking-wide'>View Your Order</button>
                         <div className='mt-6'>
                             <h1 className='font-bold text-lg'>Your Address</h1>
-                            <div className='mt-4'>
+                            <div className='mt-4 flex flex-col gap-3'>
                                 {
                                     addresses && addresses.length ?
                                         addresses.map(item => (
@@ -35,8 +76,8 @@ const Account = () => {
                                                 <p>Address : {item.address}</p>
                                                 <p>City : {item.city}</p>
                                                 <p>Country : {item.country}</p>
-                                                <p>PostalCode : {item.postalCost}</p>
-                                                <button className='mt-4 group inline-flex items-center justify-between bg-black px-4 py-2 text-lg text-white font-medium uppercase tracking-wide'>Update</button>
+                                                <p>PostalCode : {item.postalCode}</p>
+                                                <button className='mt-4 mr-5 group inline-flex items-center justify-between bg-black px-4 py-2 text-lg text-white font-medium uppercase tracking-wide'>Update</button>
                                                 <button className='mt-4 group inline-flex items-center justify-between bg-black px-4 py-2 text-lg text-white font-medium uppercase tracking-wide'>Delete</button>
                                             </div>
                                         ))
@@ -61,7 +102,13 @@ const Account = () => {
                                             ))
                                         }
                                     </div>
-                                    <button className='mt-4 group inline-flex items-center justify-between bg-black px-4 py-2 text-lg text-white font-medium uppercase tracking-wide'>Save</button>
+                                    <button onClick={handleAddOrUpdateAddress} className='mt-4 group inline-flex items-center justify-between bg-black px-4 py-2 text-lg text-white font-medium uppercase tracking-wide'>
+                                        {
+                                            componentLevelLoader && componentLevelLoader.loading ?
+                                            <ComponentLevelLoader text={"Saving Address"} color={"#ffffff"} loading={componentLevelLoader && componentLevelLoader.loading}/> 
+                                            : "Save"
+                                        }
+                                    </button>
                                 </div>
                                 : null
                         }
