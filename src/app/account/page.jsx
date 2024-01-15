@@ -38,6 +38,7 @@ const Account = () => {
                 country: "",
                 postalCode: "",
             })
+            extractAllAddresses();
         } else {
             setComponentLevelLoader({loading: false, id: ""});
             toast.error(res.message, { position: "top-center" });
