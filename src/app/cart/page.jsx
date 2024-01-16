@@ -42,11 +42,11 @@ const Cart = () => {
     return (
       <div className='w-full h-screen flex justify-center items-center'>
         <PulseLoader
-      color={"#000000"}
-      loading={pageLevelLoader}
-      size={30}
-      data-testid="loader"
-    />
+          color={"#000000"}
+          loading={pageLevelLoader}
+          size={30}
+          data-testid="loader"
+        />
       </div>
     )
   }

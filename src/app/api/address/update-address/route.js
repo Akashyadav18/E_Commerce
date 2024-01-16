@@ -9,7 +9,8 @@ export const dynamic = "force-dynamic";
 export async function PUT(req) {
     try {
         await ConnectDB();
-        const isAuthUser = await AuthUser.apply(req);
+        
+        const isAuthUser = await AuthUser(req);
         if (isAuthUser) {
             const data = await req.json();
             const { _id, fullName, address, city, country, postalCode } = data;
