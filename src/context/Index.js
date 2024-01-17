@@ -5,6 +5,15 @@ import { createContext, useEffect, useState } from "react";
 
 export const GlobalContext = createContext(null);
 
+export const initialCheckoutFormData = {
+    shippingAddress: {},
+    paymentMethod: '',
+    totalPrice: 0,
+    isPaid: false,
+    paidAt: new Date(),
+    isProcessing: true,
+}
+
 export default function GlobalState({ children }) {
 
     const [showNavModel, setShowNavModel] = useState(false);
@@ -23,13 +32,16 @@ export default function GlobalState({ children }) {
         country: "",
         postalCode: "",
     });
+    const [checkoutFormData, setCheckoutFormData] = useState(initialCheckoutFormData);
 
     useEffect(() => {
         console.log(Cookies.get('token'));
         if (Cookies.get('token') !== undefined) {
             setIsAuthUser(true);
             const userData = JSON.parse(localStorage.getItem('user')) || {};
+            const getCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
             setUser(userData);
+            setCartItems(getCartItems);
         }
         else {
             setIsAuthUser(false);
@@ -43,7 +55,7 @@ export default function GlobalState({ children }) {
                 user, setUser, pageLevelLoader, setPageLevelLoader,
                 componentLevelLoader, setComponentLevelLoader, currentUpdatedProduct,
                 setCurrentUpdatedProduct, showCartModal, setShowCartModal, cartItems, setCartItems,
-                addresses, setAddresses, addressFormData, setAddressFormData
+                addresses, setAddresses, addressFormData, setAddressFormData, checkoutFormData, setCheckoutFormData
             }}
         >{children}</GlobalContext.Provider>
     )
