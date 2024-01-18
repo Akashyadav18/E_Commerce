@@ -90,7 +90,7 @@ const Account = () => {
                 <div className='bg-white shadow'>
                     <div className='p-6 sm:p-12'>
                         <div className='flex flex-col space-y-4 md:space-y-0 md:space-x-6 md:flex-row'>
-                            {/* render random user img */}
+                            {/* render random user img for logo */}
                         </div>
                         <div className='flex flex-col flex-1 gap-2'>
                             <h4 className='text-lg font-semibold capitalize text-center md:text-left'>Name : {user?.name}</h4>
