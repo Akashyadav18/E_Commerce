@@ -2,6 +2,8 @@
 
 import { GlobalContext } from '@/context/Index'
 import { fetchAllAddresses } from '@/services/address';
+import { callStripeSession } from '@/services/stripe';
+import { loadStripe } from '@stripe/stripe-js';
 import { object } from 'joi';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react'
@@ -10,8 +12,12 @@ const Checkout = () => {
 
     const { cartItems, user, addresses, setAddresses, checkoutFormData, setCheckoutFormData} = useContext(GlobalContext);
     console.log("Cart: ", cartItems);
-    const router = useRouter();
     const [selectedAddress, setSelectedAddress] = useState(null);
+    const [isOrderProcessing, setIsOrderProcessing] = useState(false);
+    const router = useRouter();
+
+    const publishableKey = 'pk_test_51Oa9uuSJeryR5AfLkX4yUcaNpNBn1AkVYcQokdcAseKVva3lODi76LrDCHyUsNHiie6cYJwvYWgUawZKSE5eppX500bJxNWpGj';
+    const stripePromise = loadStripe(publishableKey);
 
     const getAllAddresses = async () => {
         const res = await fetchAllAddresses(user?._id);
@@ -46,6 +52,32 @@ const Checkout = () => {
 
             }
         })
+    }
+
+    const handleCheckout = async () => {
+        const stripe = await stripePromise;
+
+        const createLineItems = cartItems.map(item => ({
+            price_data: {
+                currency: 'usd',
+                product_data: {
+                    images: [item.productID.imageUrl],
+                    name: item.productID.name
+                },
+                unit_amount: item.productID.price * 100
+            },
+            quantity: 1
+        }))
+
+        const res = await callStripeSession(createLineItems);
+        setIsOrderProcessing(true);
+        localStorage.setItem("stripe", true);
+        localStorage.setItem("checkoutFormData", JSON.stringify(checkoutFormData));
+
+        const {error} = await stripe.redirectToCheckout({
+            sessionId: res.id,
+        })
+        console.log("Payment Error :", error);
     }
 
     console.log(checkoutFormData);
@@ -115,7 +147,7 @@ const Checkout = () => {
                             </p>
                         </div>
                         <div className='pb-10'>
-                            <button disabled={(cartItems && cartItems.length ===0) || Object.keys(checkoutFormData.shippingAddress).length === 0} className='mt-4 disabled:opacity-50 w-full mr-5 flex items-center justify-between bg-black px-4 py-2 text-lg text-white font-medium uppercase'>
+                            <button onClick={handleCheckout} disabled={(cartItems && cartItems.length ===0) || Object.keys(checkoutFormData.shippingAddress).length === 0} className='mt-4 disabled:opacity-50 w-full mr-5 flex items-center justify-between bg-black px-4 py-2 text-lg text-white font-medium uppercase'>
                                 CheckOut
                             </button>
                         </div>
