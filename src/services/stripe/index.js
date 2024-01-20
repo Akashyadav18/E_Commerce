@@ -6,7 +6,7 @@ export const callStripeSession = async (formData) => {
             method: 'POST',
             headers: {
                 "content-type": "application/json",
-                Authorization: `Bearer ${Cookies.get('token')}`
+                Authentication: `Bearer ${Cookies.get('token')}`
             },
             body: JSON.stringify(formData)
         });
