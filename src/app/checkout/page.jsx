@@ -2,19 +2,24 @@
 
 import { GlobalContext } from '@/context/Index'
 import { fetchAllAddresses } from '@/services/address';
+import { createNewOrder } from '@/services/order';
 import { callStripeSession } from '@/services/stripe';
 import { loadStripe } from '@stripe/stripe-js';
 import { object } from 'joi';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react'
+import toast from 'react-hot-toast';
+import { PulseLoader } from 'react-spinners';
 
 const Checkout = () => {
 
-    const { cartItems, user, addresses, setAddresses, checkoutFormData, setCheckoutFormData} = useContext(GlobalContext);
+    const { cartItems, user, addresses, setAddresses, checkoutFormData, setCheckoutFormData } = useContext(GlobalContext);
     console.log("Cart: ", cartItems);
     const [selectedAddress, setSelectedAddress] = useState(null);
     const [isOrderProcessing, setIsOrderProcessing] = useState(false);
+    const [orderSuccess, setOrderSuccess] = useState(false);
     const router = useRouter();
+    const params = useSearchParams();
 
     const publishableKey = 'pk_test_51Oa9uuSJeryR5AfLkX4yUcaNpNBn1AkVYcQokdcAseKVva3lODi76LrDCHyUsNHiie6cYJwvYWgUawZKSE5eppX500bJxNWpGj';
     const stripePromise = loadStripe(publishableKey);
@@ -30,14 +35,55 @@ const Checkout = () => {
         if (user !== null) getAllAddresses()
     }, [user]);
 
+    useEffect(() => {
+        async function createFinalOrder() {
+
+            const isStripe = JSON.parse(localStorage.getItem('stripe'));
+
+            if (isStripe && params.get('status') === "success" && cartItems && cartItems.length > 0) {
+                setIsOrderProcessing(true);
+                const getCheckoutFormData = JSON.parse(localStorage.getItem('checkoutFormData'));
+
+                const createFinalCheckoutFormData = {
+                    user: user?._id,
+                    shippingAddress: getCheckoutFormData.shippingAddress,
+                    orderItems: cartItems.map(item => ({
+                        qty: 1,
+                        product: item.productID,
+                    })),
+                    paymentMethod: 'Stripe',
+                    totalPrice: cartItems.reduce((total, item) => item.productID.price + total, 0),
+                    isPaid: true,
+                    isProcessing: true,
+                    paidAt: new Date(),
+                }
+
+                const res = await createNewOrder(createFinalCheckoutFormData);
+                if (res.success) {
+                    setIsOrderProcessing(false);
+                    setOrderSuccess(true);
+                    toast.success(res.message, { position: "top-center" });
+                } else {
+                    setIsOrderProcessing(false);
+                    setOrderSuccess(false);
+                    toast.error(res.message, { position: "top-center" });
+                }
+            }
+        }
+
+        createFinalOrder();
+
+    }, [params.get('status'), cartItems]);
+
     const handleSelectedAddress = async (getAddress) => {
 
-        if(getAddress._id === selectedAddress) {
+        if (getAddress._id === selectedAddress) {
             setSelectedAddress(null);
-            setCheckoutFormData({...checkoutFormData, shippingAddress: {}
+            setCheckoutFormData({
+                ...checkoutFormData, shippingAddress: {}
             });
             return;
-        } 
+        }
 
         setSelectedAddress(getAddress._id);
         setCheckoutFormData({
@@ -74,13 +120,39 @@ const Checkout = () => {
         localStorage.setItem("stripe", true);
         localStorage.setItem("checkoutFormData", JSON.stringify(checkoutFormData));
 
-        const {error} = await stripe.redirectToCheckout({
+        const { error } = await stripe.redirectToCheckout({
             sessionId: res.id,
         })
         console.log("Payment Error :", error);
     }
 
     console.log(checkoutFormData);
+
+    if (orderSuccess) {
+        return <section className='h-screen bg-gray-200'>
+            <div className='flex justify-center items-center text-xl font-bold'>
+                <h1>
+                    Yours Payment is Successful
+                </h1>
+                <button className='mt-4 disabled:opacity-50 w-full mr-5 flex items-center justify-between bg-black px-4 py-2 text-lg text-white font-medium uppercase'>
+                    View Yours Orders
+                </button>
+
+            </div>
+
+        </section>
+    }
+
+    if (isOrderProcessing) {
+        return <div className='w-full h-screen flex justify-center items-center'>
+            <PulseLoader
+                color={"#000000"}
+                loading={isOrderProcessing}
+                size={30}
+                data-testid="loader"
+            />
+        </div>
+    }
 
     return (
         <div>
@@ -110,7 +182,7 @@ const Checkout = () => {
                         {
                             addresses && addresses.length ?
                                 addresses.map((item) => (
-                                    <div onClick={()=> handleSelectedAddress(item)} key={item._id} className={`border p-6 cursor-pointer ${item._id === selectedAddress ? "border-green-400" : null}`}>
+                                    <div onClick={() => handleSelectedAddress(item)} key={item._id} className={`border p-6 cursor-pointer ${item._id === selectedAddress ? "border-green-400" : null}`}>
                                         <p>Name : {item.fullName}</p>
                                         <p>Address : {item.address}</p>
                                         <p>City : {item.city}</p>
@@ -147,7 +219,7 @@ const Checkout = () => {
                             </p>
                         </div>
                         <div className='pb-10'>
-                            <button onClick={handleCheckout} disabled={(cartItems && cartItems.length ===0) || Object.keys(checkoutFormData.shippingAddress).length === 0} className='mt-4 disabled:opacity-50 w-full mr-5 flex items-center justify-between bg-black px-4 py-2 text-lg text-white font-medium uppercase'>
+                            <button onClick={handleCheckout} disabled={(cartItems && cartItems.length === 0) || Object.keys(checkoutFormData.shippingAddress).length === 0} className='mt-4 disabled:opacity-50 w-full mr-5 flex items-center justify-between bg-black px-4 py-2 text-lg text-white font-medium uppercase'>
                                 CheckOut
                             </button>
                         </div>
