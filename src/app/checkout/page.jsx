@@ -130,11 +130,11 @@ const Checkout = () => {
 
     if (orderSuccess) {
         return <section className='h-screen bg-gray-200'>
-            <div className='flex justify-center items-center text-xl font-bold'>
+            <div className='flex flex-col justify-center items-center text-xl font-bold m-20'>
                 <h1>
                     Yours Payment is Successful
                 </h1>
-                <button className='mt-4 disabled:opacity-50 w-full mr-5 flex items-center justify-between bg-black px-4 py-2 text-lg text-white font-medium uppercase'>
+                <button className='mt-4 mr-5 flex items-center justify-between text-center bg-black px-4 py-2 text-lg text-white font-medium uppercase'>
                     View Yours Orders
                 </button>
 
