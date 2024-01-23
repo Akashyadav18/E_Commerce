@@ -128,18 +128,22 @@ const Checkout = () => {
 
     console.log(checkoutFormData);
 
+    useEffect(() => {
+        if(orderSuccess) {
+            setTimeout(() => {
+                // setOrderSuccess(false);
+                router.push('/orders');
+            }, [2000])
+        }
+    }, [orderSuccess]);
+
     if (orderSuccess) {
         return <section className='h-screen bg-gray-200'>
             <div className='flex flex-col justify-center items-center text-xl font-bold m-20'>
                 <h1>
-                    Yours Payment is Successful
+                    Yours Payment is Successful You will redirect to Orders page in 3 sec.
                 </h1>
-                <button className='mt-4 mr-5 flex items-center justify-between text-center bg-black px-4 py-2 text-lg text-white font-medium uppercase'>
-                    View Yours Orders
-                </button>
-
             </div>
-
         </section>
     }
 
