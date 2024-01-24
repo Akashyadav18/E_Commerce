@@ -50,6 +50,7 @@ export default function GlobalState({ children }) {
         postalCode: "",
     });
     const [checkoutFormData, setCheckoutFormData] = useState(initialCheckoutFormData);
+    const [allOrdersForUser, setAllOrdersForUser] = useState([])
     const route = useRouter();
     const pathName = usePathname();
 
@@ -86,7 +87,8 @@ export default function GlobalState({ children }) {
                 user, setUser, pageLevelLoader, setPageLevelLoader,
                 componentLevelLoader, setComponentLevelLoader, currentUpdatedProduct,
                 setCurrentUpdatedProduct, showCartModal, setShowCartModal, cartItems, setCartItems,
-                addresses, setAddresses, addressFormData, setAddressFormData, checkoutFormData, setCheckoutFormData
+                addresses, setAddresses, addressFormData, setAddressFormData, checkoutFormData, setCheckoutFormData, 
+                allOrdersForUser, setAllOrdersForUser
             }}
         >{children}</GlobalContext.Provider>
     )

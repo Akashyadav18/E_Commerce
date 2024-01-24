@@ -13,10 +13,13 @@ export async function GET (req) {
         if(isAuthUser) {
             const {searchParams} = new URL(req.url);
             const id = searchParams.get('id');
+            if(!id) {
+                return NextResponse.json({message: "Product ID required", success: false});
+            }
 
             const extractOrders = await Order.find({user: id}).populate('orderItems.product');
             if(extractOrders) {
-                return NextResponse.json({data: extractOrders, status: true, status: 200})
+                return NextResponse.json({data: extractOrders, message: "Get all Orders", status: true, status: 200})
             } else {
                 return NextResponse.json({message: "Failed to get all Orders", success: false, status:500});
             }

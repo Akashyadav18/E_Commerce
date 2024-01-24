@@ -2,7 +2,7 @@ import Cookies from 'js-cookie'
 
 export const createNewOrder = async (formData) => {
     try {
-        const res = await fetch('/api/Order/create-order', {
+        const res = await fetch('/api/orders/create-order', {
             method: 'POST',
             headers: { 
                 "Content-Type": "application/json",
@@ -21,7 +21,7 @@ export const createNewOrder = async (formData) => {
 
 export const getAllOrdersForUser = async (id) => {
     try {
-        const res = await fetch(`/api/Order/get-all-orders?id=${id}`, {
+        const res = await fetch(`/api/orders/get-all-orders?id=${id}`, {
             method: 'GET',
             headers: { 
                 Authentication: `Bearer ${Cookies.get('token')}`,
@@ -38,7 +38,7 @@ export const getAllOrdersForUser = async (id) => {
 
 export const getOrderDetails = async (id) => {
     try {
-        const res = await fetch(`/api/Order/order-details?id=${id}`, {
+        const res = await fetch(`/api/orders/order-details?id=${id}`, {
             method: 'GET',
             headers: {
                 Authentication: `Bearer ${Cookies.get('token')}`,
