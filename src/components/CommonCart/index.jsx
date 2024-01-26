@@ -2,8 +2,12 @@
 
 import React from 'react'
 import ComponentLevelLoader from '../Loader/componentLevel'
+import { useRouter } from 'next/navigation';
 
 const CommonCart = ({ cartItems = [], handleDeleteCartItem, componentLevelLoader }) => {
+
+  const router = useRouter();
+
   return (
     <section className='h-screen bg-gray-100'>
       <div className='mx-auto px-4 sm:px-6 lg:px-8'>
@@ -70,7 +74,7 @@ const CommonCart = ({ cartItems = [], handleDeleteCartItem, componentLevelLoader
                   </p>
                 </div>
                 <div className='mt-5 text-center'>
-                  <button disabled={cartItems && cartItems.length === 0} className='group disabled:opacity-50 inline-flex w-full items-center justify-between bg-black px-6 py-3 text-lg text-white font-medium uppercase tracking-wide'>CheckOut</button>
+                  <button onClick={() => router.push('/checkout')} disabled={cartItems && cartItems.length === 0} className='group disabled:opacity-50 inline-flex w-full items-center justify-between bg-black px-6 py-3 text-lg text-white font-medium uppercase tracking-wide'>CheckOut</button>
                 </div>
 
               </div>
