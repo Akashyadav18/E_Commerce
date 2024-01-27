@@ -43,6 +43,6 @@ export default function Orders() {
     }
 
     return (
-        <section>Your all Orders</section>
+        <section>View Your all Orders in this page</section>
     )
 }
