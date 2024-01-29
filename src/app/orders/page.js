@@ -27,7 +27,7 @@ export default function Orders() {
         if (user !== null) extractAllOrders();
     }, [user]);
 
-    console.log("AllOrders :", allOrdersForUser);
+    console.log(allOrdersForUser);
 
     if (pageLevelLoader) {
         return (

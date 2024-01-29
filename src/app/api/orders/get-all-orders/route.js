@@ -19,7 +19,7 @@ export async function GET (req) {
 
             const extractOrders = await Order.find({user: id}).populate('orderItems.product');
             if(extractOrders) {
-                return NextResponse.json({data: extractOrders, message: "Get all Orders", status: true, status: 200})
+                return NextResponse.json({data: extractOrders, status: true, status: 200})
             } else {
                 return NextResponse.json({message: "Failed to get all Orders", success: false, status:500});
             }
