@@ -22,6 +22,7 @@ export async function GET(req) {
                 return NextResponse.json({
                     success: true,
                     data: extractAllOrders,
+                    message: "Get all orders"
                 });
             } else {
                 return NextResponse.json({

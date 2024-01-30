@@ -5,6 +5,7 @@ import ComponentLevelLoader from '@/components/Loader/componentLevel';
 import { GlobalContext } from '@/context/Index'
 import { addNewAddress, deleteAddress, fetchAllAddresses, updateAddress } from '@/services/address';
 import { addNewAddressFormControls } from '@/utils';
+import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import { PulseLoader } from 'react-spinners';
@@ -14,6 +15,7 @@ const Account = () => {
     const { user, addressFormData, setAddressFormData, addresses, setAddresses, componentLevelLoader, setComponentLevelLoader, pageLevelLoader, setPageLevelLoader } = useContext(GlobalContext);
     const [showAddressForm, setShowAddressForm] = useState(false);
     const [currentEditedAddressId, setCurrentEditedAddressId] = useState(null);
+    const router = useRouter();
 
     const extractAllAddresses = async () => {
         setPageLevelLoader(true);
@@ -97,7 +99,7 @@ const Account = () => {
                             <p className='text-lg font-semibold'>Email : {user?.email}</p>
                             <p className='text-lg font-semibold capitalize '>Role : {user?.role}</p>
                         </div>
-                        <button className='mt-4 group inline-flex items-center justify-between bg-black px-4 py-2 text-lg text-white font-medium uppercase tracking-wide'>View Your Order</button>
+                        <button onClick={() => router.push('/orders')} className='mt-4 group inline-flex items-center justify-between bg-black px-4 py-2 text-lg text-white font-medium uppercase tracking-wide'>View Your Order</button>
                         <div className='mt-6'>
                             <h1 className='font-bold text-lg'>Your Address</h1>
                             {

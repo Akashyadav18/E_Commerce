@@ -5,10 +5,12 @@ import { getAllOrdersForUser } from "@/services/order";
 import { useContext, useEffect } from "react"
 import toast from "react-hot-toast";
 import { PulseLoader } from "react-spinners";
+import { useRouter } from 'next/navigation';
 
 export default function Orders() {
 
     const { user, pageLevelLoader, setPageLevelLoader, allOrdersForUser, setAllOrdersForUser } = useContext(GlobalContext);
+    const router = useRouter();
 
     async function extractAllOrders() {
         setPageLevelLoader(true);
@@ -72,9 +74,9 @@ export default function Orders() {
                                                     </div>
                                                     <div className="flex gap-5">
                                                         <button className='mt-4 disabled:opacity-50 w-full mr-5 flex items-center justify-between bg-black px-4 py-2 text-lg text-white font-medium uppercase'>
-                                                            {item.isProcessing ? "Order is Processing": "Order is delivered"}
+                                                            {item.isProcessing ? "Order is Processing" : "Order is delivered"}
                                                         </button>
-                                                        <button className='mt-4 disabled:opacity-50 w-full mr-5 flex items-center justify-between bg-black px-4 py-2 text-lg text-white font-medium uppercase'>
+                                                        <button onClick={() => router.push(`/orders/${item._id}`)} className='mt-4 w-full mr-5 flex items-center justify-between bg-black px-4 py-2 text-lg text-white font-medium uppercase'>
                                                             View Order Details
                                                         </button>
                                                     </div>

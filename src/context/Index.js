@@ -51,6 +51,7 @@ export default function GlobalState({ children }) {
     });
     const [checkoutFormData, setCheckoutFormData] = useState(initialCheckoutFormData);
     const [allOrdersForUser, setAllOrdersForUser] = useState([])
+    const [orderDetails, setOrderDetails] = useState(null);
     const route = useRouter();
     const pathName = usePathname();
 
@@ -88,7 +89,7 @@ export default function GlobalState({ children }) {
                 componentLevelLoader, setComponentLevelLoader, currentUpdatedProduct,
                 setCurrentUpdatedProduct, showCartModal, setShowCartModal, cartItems, setCartItems,
                 addresses, setAddresses, addressFormData, setAddressFormData, checkoutFormData, setCheckoutFormData, 
-                allOrdersForUser, setAllOrdersForUser
+                allOrdersForUser, setAllOrdersForUser, orderDetails, setOrderDetails
             }}
         >{children}</GlobalContext.Provider>
     )
