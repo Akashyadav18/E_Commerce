@@ -1,8 +1,9 @@
 "use client"
 
-import React from 'react'
+import React, { useContext } from 'react'
 import ComponentLevelLoader from '../Loader/componentLevel'
 import { useRouter } from 'next/navigation';
+import { GlobalContext } from '@/context/Index';
 
 const CommonCart = ({ cartItems = [], handleDeleteCartItem, componentLevelLoader }) => {
 
@@ -43,9 +44,9 @@ const CommonCart = ({ cartItems = [], handleDeleteCartItem, componentLevelLoader
                       ))
                     }
                   </ul>
-                  : 
+                  :
                   <h1 className='font-bold text-lg text-center'>Cart is Empty!</h1>
-                  }
+                }
               </div>
 
               <div className='mt-6 border-t border-b py-2'>
@@ -74,7 +75,12 @@ const CommonCart = ({ cartItems = [], handleDeleteCartItem, componentLevelLoader
                   </p>
                 </div>
                 <div className='mt-5 text-center'>
-                  <button onClick={() => router.push('/checkout')} disabled={cartItems && cartItems.length === 0} className='group disabled:opacity-50 inline-flex w-full items-center justify-between bg-black px-6 py-3 text-lg text-white font-medium uppercase tracking-wide'>CheckOut</button>
+                  <button onClick={() => router.push('/checkout')} disabled={cartItems && cartItems.length === 0} className='group disabled:opacity-50 inline-flex w-full items-center justify-between bg-black px-6 py-3 text-lg text-white font-medium uppercase tracking-wide'>
+                    {
+                      componentLevelLoader && componentLevelLoader.loading && componentLevelLoader.id === cartItem._id ?
+                        <ComponentLevelLoader text={"Checkout"} color={"#000000"} loading={componentLevelLoader && componentLevelLoader.loading} /> : "CheckOut"
+                    }
+                  </button>
                 </div>
 
               </div>

@@ -5,29 +5,40 @@ import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-export async function GET (req) {
+export async function GET(req) {
     try {
         await ConnectDB();
-
         const isAuthUser = await AuthUser(req);
-        if(isAuthUser) {
-            const {searchParams} = new URL(req.url);
-            const id = searchParams.get('id');
-            if(!id) {
-                return NextResponse.json({message: "Product ID required", success: false});
-            }
 
-            const extractOrders = await Order.find({user: id}).populate('orderItems.product');
-            if(extractOrders) {
-                return NextResponse.json({data: extractOrders, status: true, status: 200})
+        if (isAuthUser) {
+            const { searchParams } = new URL(req.url);
+            const id = searchParams.get("id");
+
+            const extractAllOrders = await Order.find({ user: id }).populate(
+                "orderItems.product"
+            );
+
+            if (extractAllOrders) {
+                return NextResponse.json({
+                    success: true,
+                    data: extractAllOrders,
+                });
             } else {
-                return NextResponse.json({message: "Failed to get all Orders", success: false, status:500});
+                return NextResponse.json({
+                    success: false,
+                    message: "Failed to get all orders ! Please try again",
+                });
             }
-
         } else {
-            return NextResponse.json({message: "You are not Authenticated", success: false})
+            return NextResponse.json({
+                success: false,
+                message: "You are not authenticated",
+            });
         }
-    } catch (error) {
-        return NextResponse.json({message: "Something went wrong while getting all Orders", success: false, error: error})
+    } catch (e) {
+        return NextResponse.json({
+            success: false,
+            message: "Something went wrong ! Please try again later",
+        });
     }
 }

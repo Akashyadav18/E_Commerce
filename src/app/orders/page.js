@@ -43,6 +43,51 @@ export default function Orders() {
     }
 
     return (
-        <section>View Your all Orders in this page!</section>
+        <section className=" bg-gray-200">
+            <div className="mx-auto sm:px-6 lg:px-8">
+                <div className="mt-8 mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+                    <div className="px-4 py-6 sm:px-8 sm:py-10">
+                        <div className="flow-root">
+                            {
+                                allOrdersForUser && allOrdersForUser.length ?
+                                    <ul className="flex flex-col gap-4">
+                                        {
+                                            allOrdersForUser.map(item =>
+                                                <li key={item._id} className="flex flex-col bg-white shadow p-5 space-y-3 py-6 text-left">
+                                                    <div className="flex">
+                                                        <h1 className="font-bold text-lg mb-3 flex-1">#Order: {item._id}</h1>
+                                                        <div className="flex item-center">
+                                                            <p className="mr-3 text-sm font-medium text-gray-900">Total Paid amount</p>
+                                                            <p className="mr-3 text-2xl font-semibold text-gray-900">${item.totalPrice}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex gap-2">
+                                                        {
+                                                            item.orderItems.map((orderItem, index) =>
+                                                                <div key={index} className="shrink-0">
+                                                                    <img src={orderItem && orderItem.product && orderItem.product.imageUrl} alt="orderItem" className="h-24 w-24 max-w-full rounded-lg object-cover" />
+                                                                </div>
+                                                            )
+                                                        }
+                                                    </div>
+                                                    <div className="flex gap-5">
+                                                        <button className='mt-4 disabled:opacity-50 w-full mr-5 flex items-center justify-between bg-black px-4 py-2 text-lg text-white font-medium uppercase'>
+                                                            {item.isProcessing ? "Order is Processing": "Order is delivered"}
+                                                        </button>
+                                                        <button className='mt-4 disabled:opacity-50 w-full mr-5 flex items-center justify-between bg-black px-4 py-2 text-lg text-white font-medium uppercase'>
+                                                            View Order Details
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                            )
+                                        }
+                                    </ul>
+                                    : null
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     )
 }
