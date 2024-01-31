@@ -16,13 +16,12 @@ export const initialCheckoutFormData = {
 }
 
 const protectedRoutes = [
-    '/cart',
-    '/checkout',
-    '/account',
-    '/orders',
-    '/admin-view',
-    '/admin-view/add-product',
-    '/admin-view/all-products',
+    'cart',
+    'checkout',
+    'account',
+    'orders',
+    'admin-view',
+    
 ]
 
 const protectedAdminRoutes = [
@@ -70,7 +69,7 @@ export default function GlobalState({ children }) {
     }, [Cookies])
 
     useEffect(() => {
-        if (user && Object.keys(user).length === 0 && protectedRoutes.indexOf(pathName) > -1) {
+        if ( pathName !== '/register' && user && Object.keys(user).length === 0 && protectedRoutes.includes(pathName) > -1) {
             route.push('/login');
         }
     }, [user, pathName]);
