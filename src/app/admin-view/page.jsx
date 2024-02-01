@@ -94,7 +94,7 @@ const AdminView = () => {
                         <button className='mt-4 disabled:opacity-50 mr-5 flex items-center justify-between bg-black px-4 py-2 text-lg text-white font-medium uppercase'>
                           {item.isProcessing ? "Order is Processing" : "Order is delivered"}
                         </button>
-                        <button onClick={() => handleUpdateOrderStatus(item)} className='mt-4 mr-5 flex items-center justify-between bg-black px-4 py-2 text-lg text-white font-medium uppercase'>
+                        <button onClick={() => handleUpdateOrderStatus(item)} disabled={!item.isProcessing} className='mt-4 disabled:opacity-50 mr-5 flex items-center justify-between bg-black px-4 py-2 text-lg text-white font-medium uppercase'>
                           {
                             componentLevelLoader && componentLevelLoader.loading && componentLevelLoader.id === item._id ?
                               <ComponentLevelLoader text={"Updating order Status"} color={"#ffffff"} loading={componentLevelLoader && componentLevelLoader.loading} />
