@@ -2,6 +2,17 @@ import jwt from "jsonwebtoken"
 
 export const dynamic = "force-dynamic";
 
+const express = require('express');
+const cors = require('cors');
+
+const app = express();
+
+// Allow requests from your Next.js domain
+app.use(cors({ origin: 'https://e-commerce-omega-sepia.vercel.app/' }));
+
+// Other routes and middleware...
+
+
 const AuthUser = async (req) => {
     const token = req.headers.get('Authentication')?.split(" ")[1];
     if (!token) {
