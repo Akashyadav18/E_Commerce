@@ -2,14 +2,11 @@
 const nextConfig = {
     images: {
         domains: ["firebasestorage.googleapis.com"],
-    }
-}
-
-module.exports = {
+    },
     async headers() {
         return [
             {
-                source: "/api/:path*", // Matches all API routes
+                source: "/api/:path*",
                 headers: [
                     { key: "Access-Control-Allow-Origin", value: "*" }, // Allow all origins during development (replace with specific origin for production)
                     { key: "Access-Control-Allow-Methods", value: "GET, POST, PUT, DELETE, OPTIONS" }, // Common HTTP methods
@@ -20,5 +17,4 @@ module.exports = {
     },
 };
 
-
-module.exports = nextConfig
+export default nextConfig;
