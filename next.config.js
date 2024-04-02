@@ -8,7 +8,7 @@ module.exports = {
     async headers() {
         return [
             {
-                source: "/api/admin/all-products/*",
+                source: "/api/*",
                 headers: [
                     { key: "Access-Control-Allow-Origin", value: "*" }, // Adjust for production
                     { key: "Access-Control-Allow-Methods", value: "GET, POST, PUT, DELETE, OPTIONS" },
