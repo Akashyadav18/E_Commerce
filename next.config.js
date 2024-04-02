@@ -4,15 +4,16 @@ const nextConfig = {
         domains: ["firebasestorage.googleapis.com"],
     }
 }
+
 module.exports = {
     async headers() {
         return [
             {
-                source: "/api/*",
+                source: "/api/:path*", // Matches all API routes
                 headers: [
-                    { key: "Access-Control-Allow-Origin", value: "*" }, // Adjust for production
-                    { key: "Access-Control-Allow-Methods", value: "GET, POST, PUT, DELETE, OPTIONS" },
-                    { key: "Access-Control-Allow-Headers", value: "Content-Type, Authorization" },
+                    { key: "Access-Control-Allow-Origin", value: "*" }, // Allow all origins during development (replace with specific origin for production)
+                    { key: "Access-Control-Allow-Methods", value: "GET, POST, PUT, DELETE, OPTIONS" }, // Common HTTP methods
+                    { key: "Access-Control-Allow-Headers", value: "Content-Type, Authorization" }, // Allow necessary headers for data and authentication
                 ],
             },
         ];
