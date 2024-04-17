@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 
 export const addNewProduct = async(formData) => {
     try {
-        const response = await fetch('/api/admin/add-product', {
+        const response = await fetch('http://localhost:3000/api/admin/add-product', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
@@ -35,7 +35,7 @@ export const getAllAdminProducts = async () => {
 
 export const updateAProduct = async (formData) => {
     try {
-        const res = await fetch('/api/admin/update-product', {
+        const res = await fetch('http://localhost:3000/api/admin/update-product', {
             method: 'PUT',
             headers: {
                 "content-type": "application/json",
@@ -54,7 +54,7 @@ export const updateAProduct = async (formData) => {
 
 export const deleteAProduct = async (id) => {
     try {
-        const res = await fetch(`/api/admin/delete-product?id=${id}`, {
+        const res = await fetch(`http://localhost:3000/api/admin/delete-product?id=${id}`, {
             method: "DELETE",
             headers: {
                 Authentication: `Bearer ${Cookies.get("token")}`,
