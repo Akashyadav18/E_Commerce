@@ -77,7 +77,7 @@ const CommonCart = ({ cartItems = [], handleDeleteCartItem, componentLevelLoader
                 <div className='mt-5 text-center'>
                   <button onClick={() => router.push('/checkout')} disabled={cartItems && cartItems.length === 0} className='group disabled:opacity-50 inline-flex w-full items-center justify-between bg-black px-6 py-3 text-lg text-white font-medium uppercase tracking-wide'>
                     {
-                      componentLevelLoader && componentLevelLoader.loading && componentLevelLoader.id === cartItem._id ?
+                      componentLevelLoader && componentLevelLoader.loading && componentLevelLoader.id === cartItems._id ?
                         <ComponentLevelLoader text={"Checkout"} color={"#000000"} loading={componentLevelLoader && componentLevelLoader.loading} /> : "CheckOut"
                     }
                   </button>
